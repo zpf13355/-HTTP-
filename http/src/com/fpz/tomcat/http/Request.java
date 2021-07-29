@@ -1,15 +1,11 @@
 package com.fpz.tomcat.http;
-
 import com.fpz.standard.http.Cookie;
 import com.fpz.standard.http.HttpServletRequest;
 import com.fpz.standard.http.HttpSession;
-
 import javax.print.DocFlavor;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
-
 public class Request implements HttpServletRequest {
     private final String method;
     private final String requestURI;
@@ -19,8 +15,6 @@ public class Request implements HttpServletRequest {
     public final Map<String,String> headers;
     public final List<Cookie> cookieList;
     public HttpSessionImpl session=null;
-
-
     public Request(String method, String requestURI, String contextPath, String servletPath, Map<String, String> paramters, Map<String, String> headers, List<Cookie> cookieList) throws IOException, ClassNotFoundException {
         this.method=method;
         this.requestURI=requestURI;
@@ -69,18 +63,6 @@ public class Request implements HttpServletRequest {
         return requestURI;
     }
 
-    //错误返回session写法
-//    @Override
-//    public HttpSession getSession() {
-//        if (session!=null){
-//            return session;
-//        }
-//
-//        //这种返回并没有和Request中的session属性关联起来，将无法将session设置到请求中
-//        return new HttpSessionImpl();
-//    }
-
-    //正确返回session写法
     @Override
     public HttpSession getSession() {
         if (session!=null){
@@ -91,18 +73,10 @@ public class Request implements HttpServletRequest {
         return session;
     }
 
-    //保存请求session
-//    public void saveToRequest(HttpSession session){
-//        this.session=session;
-//    }
-
     @Override
     public String getParameter(String name) {
         return paramters.get(name);
     }
-
-
-
 
     @Override
     public String toString() {

@@ -1,14 +1,11 @@
 package com.fpz.tomcat.http;
-
 import com.fpz.standard.http.Cookie;
 import com.fpz.standard.http.HttpServletResponse;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 public class Response implements HttpServletResponse {
     //状态码
     public int status=200;
@@ -16,12 +13,9 @@ public class Response implements HttpServletResponse {
     public final List<Cookie> cookieList;
     //响应头
     public final Map<String,String> headers;
-
     //响应体
     public final ByteArrayOutputStream bodyByteArrayOutputStream;
     public final PrintWriter bodPrintWriter;
-
-
     public Response() throws UnsupportedEncodingException {
         cookieList =new ArrayList<>();
         headers=new HashMap<>();
@@ -29,7 +23,6 @@ public class Response implements HttpServletResponse {
         Writer writer=new OutputStreamWriter(bodyByteArrayOutputStream,"UTF-8");
         bodPrintWriter=new PrintWriter(writer);
     }
-
     //响应头
     //响应体
     @Override
@@ -88,6 +81,4 @@ public class Response implements HttpServletResponse {
         }
         return String.format("Response{%d %s %s}", status, headers, bodyByteArrayOutputStream.toString());
     }
-
-
 }

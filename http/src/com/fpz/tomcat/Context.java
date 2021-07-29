@@ -1,39 +1,30 @@
 package com.fpz.tomcat;
-
 import com.fpz.standard.Servlet;
 import com.fpz.standard.ServletException;
-
 import java.io.IOException;
 import java.util.*;
-
 public class Context {
     private String name;
     private Config config;
     private ConfigReader reader;
-
     public Context(ConfigReader reader,String name){
         this.reader=reader;
         this.name=name;
     }
-
     public String getName() {
         return name;
     }
-
     public void readConfig() throws IOException {
         this.config=reader.read(name);
     }
-
     private final ClassLoader webappClassLoader=Context.class.getClassLoader();
     private List<Class<?>> servletClassList=new ArrayList<>();
     public void loadServletClass() throws ClassNotFoundException {
-        //去重：不需要对重复的类进行加载
         Set<String> servletClassNames=new HashSet<>(config.servletNameToServletClassNameMap.values());
         for (String servletClassName:servletClassNames){
             Class<?> servletClass=webappClassLoader.loadClass(servletClassName);
             servletClassList.add(servletClass);
         }
-
         for (Class<?> servletClass:servletClassList){
             System.out.println(servletClass);
         }
@@ -45,19 +36,16 @@ public class Context {
             servletList.add(servlet);
         }
     }
-
     public void initializeServletObjects() throws ServletException {
         for (Servlet servlet:servletList){
             servlet.init();
         }
     }
-
     public void destroyServlets() {
         for (Servlet servlet:servletList){
             servlet.destroy();
         }
     }
-
     public Servlet get(String servletPath) {
         //根据servletPath获取servletName
         String servletName=config.urlToServletNameMap.get(servletPath);
